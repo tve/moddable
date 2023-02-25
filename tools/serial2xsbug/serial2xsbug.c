@@ -538,7 +538,7 @@ void fxReadSerialBuffer(txSerialTool self, char* buffer, int size)
 	char* dst = self->buffer + offset;
 	char* dstLimit = self->buffer + mxBufferSize;
 #if mxTrace
-	fprintf(stderr, "%.*s", size, buffer);
+	fprintf(stderr, "\x1b[32m%.*s\x1b[0m", size, buffer);
 #endif
 	while (src < srcLimit) {
 		if (dst == dstLimit) {

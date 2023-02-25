@@ -254,7 +254,7 @@ void fxWriteNetwork(txSerialMachine machine, char* buffer, int size)
 void fxWriteSerial(txSerialTool self, char* buffer, int size)
 {
 #if mxTrace
-	fprintf(stderr, "%.*s", size, buffer);
+	fprintf(stderr, "\x1b[34m%.*s\x1b[0m", size, buffer);
 #endif
 	int count;
 	while (size) {
