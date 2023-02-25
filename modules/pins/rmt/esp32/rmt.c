@@ -190,6 +190,12 @@ void xs_rmt_read(xsMachine *the){
   	int bufferByteLength = xsmcGetArrayBufferLength(xsArg(0));
   	data = (uint8_t*)xsmcToArrayBuffer(xsArg(0));
 
+	uint32_t status;
+	rmt_get_status(rmt->channel, &status);
+	if (status & (1<<28)) {
+		xsUnknownError("rx overrun");
+	}
+
 	err = receive(rmt, data, bufferByteLength, &count, &phase);
 	if (err == -1) xsRangeError("ringbuffer has too much data");
 	xsResult = xsmcNewObject();
