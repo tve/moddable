@@ -174,8 +174,8 @@ const themes = [
 Object.freeze(themes, true)
 
 const codeFonts = [
-	"12px Fira Mono",
-	"medium 12px Fira Mono",
+	"14px Fira Mono",
+	"medium 14px Fira Mono",
 ];
 Object.freeze(codeFonts, true)
 
@@ -222,11 +222,11 @@ function buildTheme($, codeFont) {
 	// TABS
 	skins.tabsPane = new Skin({ fill:$.tab.fill[1], stroke:$.divider.fill, borders: { bottom:1 }  });
 	skins.tab = new Skin({ fill:$.tab.fill, stroke:$.tab.stroke, borders: { right:1 }  });
-	styles.tab = new Style({ font:"semibold 12px Open Sans", color:$.tab.color, horizontal:"center", left:26, right:26 });
-	styles.tabTest262 = new Style({ font:"semibold 12px Open Sans", color:$.tab.color, horizontal:"center", left:13, right:13 });
-	styles.tabBreakpoint = new Style({ font:"bold 10px", horizontal:"right", right:15, color:$.tabBubble.color });
+	styles.tab = new Style({ font:"semibold 14px Open Sans", color:$.tab.color, horizontal:"center", left:26, right:26 });
+	styles.tabTest262 = new Style({ font:"semibold 14px Open Sans", color:$.tab.color, horizontal:"center", left:13, right:13 });
+	styles.tabBreakpoint = new Style({ font:"bold 12px", horizontal:"right", right:15, color:$.tabBubble.color });
 	skins.tabBubble = new Skin({ texture:textures.glyphs, color:$.tabBubble.fill, x:0, y:48, width:48, height:16 });
-	styles.tabBubble = new Style({ font:"bold 10px", horizontal:"right", right:10, color:$.tabBreakpoint.color });
+	styles.tabBubble = new Style({ font:"bold 12px", horizontal:"right", right:10, color:$.tabBreakpoint.color });
 
 	// CODE, CONSOLE, PREFERENCES
 	skins.paneBorder = new Skin({ fill:$.tableHeader.stroke });
@@ -235,10 +235,10 @@ function buildTheme($, codeFont) {
 
 	// CODE
 	styles.pathName = new Style({ font:"semibold", color:$.pathName.color, horizontal:"left" });
-	styles.pathSpan = new Style({ font:"semibold 12px Open Sans", color:$.pathSpan.color, horizontal:"left" });
+	styles.pathSpan = new Style({ font:"semibold 14px Open Sans", color:$.pathSpan.color, horizontal:"left" });
 	
 	skins.lineNumber = new Skin({ fill:$.lineNumber.fill, stroke:$.lineNumber.stroke, borders: { right:1 } });
-	styles.lineNumber = new Style({ font:"bold 10px", horizontal:"right", right:15, color: [ $.lineNumber.color,$.lineBreakpoint.color ] });
+	styles.lineNumber = new Style({ font:"bold 12px", horizontal:"right", right:15, color: [ $.lineNumber.color,$.lineBreakpoint.color ] });
 
 	skins.lineBreakpoint = new Skin({ texture:textures.glyphs, color:["transparent", $.lineBreakpoint.fill], x:16, y:32, width:42, height:16, variants:42 });
 	skins.lineCall = new Skin({ texture:textures.glyphs, color:["transparent", $.callRow.fill], x:0, y:32, width:16, height:16 });
@@ -265,7 +265,7 @@ function buildTheme($, codeFont) {
 	// TABLES
 	skins.glyphs = new Skin({ texture:textures.glyphs, color:$.tableRow.color, x:0, y:0, width:16, height:16, variants:16 });
 	skins.tableRow = new Skin({ fill:$.tableRow.fill  });
-	styles.tableRow = new Style({ font:"normal 12px Open Sans", color:$.tableRow.color, horizontal:"left" });
+	styles.tableRow = new Style({ font:"normal 14px Open Sans", color:$.tableRow.color, horizontal:"left" });
 	skins.tableFooter = new Skin({ fill:$.tableHeader.fill[0], stroke:$.tableHeader.stroke, borders: { bottom:1 }  });
 	skins.tableHeader = new Skin({ fill:$.tableHeader.fill, stroke:$.tableHeader.stroke, borders: { bottom:1 } });
 	styles.tableHeader = new Style({ font:"bold", color:$.tableHeader.color, horizontal:"left" });
@@ -311,11 +311,11 @@ function buildTheme($, codeFont) {
 	styles.message = new Style({ font:codeFont, color:[$.code.color, $.codeKeyword.color, $.codeLiteral.color, $.codeComment.color], top:5, bottom:5, horizontal:"left" });
 
 	// PROFILE	
-	styles.profileLight = new Style({ font:"light 10px", color:$.tableRow.color, horizontal:"right", vertical:"bottom" });
-	styles.profileNormal = new Style({ font:"10px", color:$.tableRow.color, horizontal:"right", vertical:"bottom" });
+	styles.profileLight = new Style({ font:"light 12px", color:$.tableRow.color, horizontal:"right", vertical:"bottom" });
+	styles.profileNormal = new Style({ font:"12px", color:$.tableRow.color, horizontal:"right", vertical:"bottom" });
 	skins.profilePercent = new Skin({ fill:[$.tableHeader.stroke,$.callRow.fill]  });
 	skins.profileWhere = new Skin({ fill:$.button.fill, stroke:$.button.stroke, borders: { left:1, right:1, top:1, bottom:1 }});
-	styles.profileWhere = new Style({ font:"light 10px", color:$.button.color, left:5, right:5, bottom:1 });
+	styles.profileWhere = new Style({ font:"light 12px", color:$.button.color, left:5, right:5, bottom:1 });
 
 	// SERIAL
 	skins.progressBar = new Skin({ fill:$.progressBar.fill });
@@ -336,8 +336,8 @@ function buildTheme($, codeFont) {
 	styles.callRow = new Style({ font:"semibold", color:$.callRow.color, horizontal:"left" });
 	styles.debugRowName = new Style({ color:[$.tableRow.color, $.inspectFlash.color, $.inspectCache.color, $.tableRow.color] });
 	styles.debugRowValue = new Style({ font:"light", color:[$.tableRow.color, $.inspectFlash.color, $.inspectCache.color, $.tableRow.color] });
-	styles.instrumentRowName = new Style({ font:"10px", color:$.tableRow.color, horizontal:"left", vertical:"top" });
-	styles.instrumentRowValue = new Style({ font:"light 10px", color:$.tableRow.color, horizontal:"right", vertical:"top" });
+	styles.instrumentRowName = new Style({ font:"12px", color:$.tableRow.color, horizontal:"left", vertical:"top" });
+	styles.instrumentRowValue = new Style({ font:"light 12px", color:$.tableRow.color, horizontal:"right", vertical:"top" });
 	colors.instrumentBar = $.tableRow.color;
 	colors.instrumentBarHover = $.callRow.fill;
 	colors.instrumentLine = $.tableHeader.stroke;

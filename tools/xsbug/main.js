@@ -716,7 +716,7 @@ var NoCodePane = Container.template($ => ({
 }));
 
 let DebuggerApplication = Application.template($ => ({
-	style:{ font:"12px Open Sans" },
+	style:{ font:"14px Open Sans" },
 	Behavior: ApplicationBehavior,
 	contents: [
 	],
