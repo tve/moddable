@@ -30,8 +30,8 @@ const device = {
       in: 19,
       out: 33,
       port: 1,
-			// MISO set-up time is 20ns @5Mhz when burst-reading FIFO, that's not enough
-			// due to MISO passing through GPIO matrix...
+      // MISO set-up time is 20ns @5Mhz when burst-reading FIFO, that's not enough
+      // due to MISO passing through GPIO matrix...
       hz: 3_000_000,
       mode: 0,
     },
@@ -51,6 +51,7 @@ const device = {
     // pins used by the sx1276 radio
     radio_reset: 27,
     radio_dio0: 26,
+    radio_dio2: 34,
     radio_dio4: 22,
     radio_select: 25,
   },
