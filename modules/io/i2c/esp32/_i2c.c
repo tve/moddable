@@ -144,6 +144,8 @@ void _xs_i2c_constructor(xsMachine *the)
 	i2c->next = gI2C;
 	gI2C = i2c;
 
+	// xsLog("I2C: p=%d sda=%d scl=%d hz=%d addr=%d to=%d\n", i2c->port, i2c->data, i2c->clock, i2c->hz, i2c->address, i2c->timeout);
+
 	builtinUsePin(data);
 	builtinUsePin(clock);
 }

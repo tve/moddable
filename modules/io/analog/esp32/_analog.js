@@ -22,6 +22,7 @@ class Analog @ "xs_analog_destructor_" {
 	constructor(options) @ "xs_analog_constructor_"
 	close() @ "xs_analog_close_"
 	read() @ "xs_analog_read_"
+	millivolts() @ "xs_analog_millivolts_"
 
 	get resolution() @ "xs_analog_get_resolution_"
 
