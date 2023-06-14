@@ -41,6 +41,7 @@
 #if __ets__ && !ESP32 && !defined(MODDEF_ONEWIRE_DIRECTGPIO)
 	// esp8266 defaults to MODDEF_ONEWIRE_DIRECTGPIO 
 	#define MODDEF_ONEWIRE_DIRECTGPIO 1
+    pffft!;
 #endif
 
 #if MODDEF_ONEWIRE_DIRECTGPIO
@@ -55,9 +56,6 @@
 	#define DIRECT_WRITE_LOW(base, mask)    (GPOC = (mask))             //GPIO_OUT_W1TC_ADDRESS
 	#define DIRECT_WRITE_HIGH(base, mask)   (GPOS = (mask))             //GPIO_OUT_W1TS_ADDRESS
 #endif
-
-// Use for now... sort later... Need to allocate
-static modGPIOConfigurationRecord config;
 
 /// @cond ignore
 struct _OneWireBus_Timing
@@ -160,14 +158,26 @@ static void _write_bit(const OneWireBus * bus, int bit)
 		ets_delay_us(bus->timing->A);
 		modGPIOWrite(config, 1);  // Release the bus
 		modCriticalSectionEnd();
-		ets_delay_us(bus->timing->B);
+		ets_delay_us(bus->timing->C);
 	}
 	else {
-		ets_delay_us(bus->timing->C);
+		ets_delay_us(bus->timing->B);
 		modGPIOWrite(config, 1);  // Release the bus
 		modCriticalSectionEnd();
 		ets_delay_us(bus->timing->D);
 	}
+}
+
+static void _drive_high(const OneWireBus * bus)
+{
+    struct modGPIOConfigurationRecord *config = bus->config;
+
+    modGPIOWrite(config, 1);  // Drive DQ high
+#if MODDEF_ONEWIRE_DIRECTGPIO
+    DIRECT_MODE_OUTPUT(REG, PIN_TO_BITMASK(config->pin)); // FIXME
+#else
+    modGPIOSetMode(config, kModGPIOOutput);
+#endif
 }
 
 /**
@@ -220,6 +230,7 @@ static owb_status _write_bits(const OneWireBus * bus, uint8_t data, int number_o
         _write_bit(bus, data & 0x01);
         data >>= 1;
     }
+    _drive_high(bus);
 
     return OWB_STATUS_OK;
 }
@@ -242,6 +253,7 @@ static owb_status _read_bits(const OneWireBus * bus, uint8_t *out, int number_of
         }
     }
     *out = result;
+    _drive_high(bus);
 
     return OWB_STATUS_OK;
 }

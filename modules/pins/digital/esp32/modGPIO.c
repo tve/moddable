@@ -40,6 +40,7 @@ int modGPIOInit(modGPIOConfiguration config, const char *port, uint8_t pin, uint
 	}
 
 	config->pin = pin;
+	gpio_reset_pin(config->pin); // TvE
 	result = modGPIOSetMode(config, mode);
 	if (result) {
 		config->pin = kUninitializedPin;
@@ -56,7 +57,7 @@ void modGPIOUninit(modGPIOConfiguration config)
 
 int modGPIOSetMode(modGPIOConfiguration config, uint32_t mode)
 {
-	gpio_reset_pin(config->pin);
+	//gpio_reset_pin(config->pin); // TvE
 	mode &= ~(kModGPIOWakeRisingEdge | kModGPIOWakeFallingEdge);
 
 	switch (mode) {
@@ -69,7 +70,7 @@ int modGPIOSetMode(modGPIOConfiguration config, uint32_t mode)
 
 			gpio_pad_select_gpio(config->pin);
 			gpio_set_direction(config->pin, (kModGPIOOutputOpenDrain == mode) ? GPIO_MODE_OUTPUT_OD : GPIO_MODE_OUTPUT);
-			gpio_set_level(config->pin, 0);
+			//gpio_set_level(config->pin, 0); // TvE
 			break;
 
 		case kModGPIOInput:

@@ -41,7 +41,9 @@
 #define MODDEF_ONEWIRE_RMT_RX_CHANNEL (RMT_CHANNEL_2)
 #endif
 
+#ifndef MODDEF_ONEWIRE_DRIVER_GPIO
 #define MODDEF_ONEWIRE_DRIVER_RMT RMT
+#endif
 
 #else
 #define MODDEF_ONEWIRE_DRIVER_GPIO GPIO
@@ -98,6 +100,7 @@ void xs_onewire(xsMachine *the)
   onewire->owb = owb_gpio_initialize(&onewire->driver_info, onewire->pin);
 #endif
 #ifdef MODDEF_ONEWIRE_DRIVER_RMT
+  //xsLog("Onewire: RMT pin=%d tx=%d rx=%d\n", onewire->pin, MODDEF_ONEWIRE_RMT_TX_CHANNEL, MODDEF_ONEWIRE_RMT_RX_CHANNEL);
   onewire->owb = owb_rmt_initialize(&onewire->driver_info, onewire->pin, MODDEF_ONEWIRE_RMT_TX_CHANNEL, MODDEF_ONEWIRE_RMT_RX_CHANNEL);
 #endif
   if (onewire->owb == NULL)

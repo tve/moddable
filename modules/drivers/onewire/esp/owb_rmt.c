@@ -117,6 +117,7 @@ static owb_status _reset(const OneWireBus *bus, bool *is_present)
     rmt_set_rx_idle_thresh(i->rx_channel, OW_DURATION_RESET+60);
 
     onewire_flush_rmt_rx_buf(bus);
+    printf("OW: reset, start RX ch %d, TX ch %d\n", i->rx_channel, i->tx_channel);
     rmt_rx_start(i->rx_channel, true);
     if (rmt_write_items(i->tx_channel, tx_items, 1, true) == ESP_OK)
     {
@@ -363,6 +364,7 @@ static owb_status _init(owb_rmt_driver_info *info, uint8_t gpio_num,
                 {
                     rmt_get_ringbuf_handle(info->rx_channel, &info->rb);
                     status = OWB_STATUS_OK;
+                    printf("OW: installed RMT driver on gpio %d, tx channel %d, rx channel %d\n", gpio_num, tx_channel, rx_channel);
                 }
                 else
                 {
