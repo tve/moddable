@@ -51,6 +51,13 @@ class OneWire @ "xs_onewire_destructor" {
     return result;
   }
 
+  // given hex string ROM return binary Uint8Array version
+  static fromHexString(str) {
+    var bytes = new Uint8Array(Math.ceil(str.length / 2));
+    for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(str.substr(i * 2, 2), 16);
+    return bytes.buffer
+  }
+
 }
 
 Object.freeze(OneWire.prototype);
