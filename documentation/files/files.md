@@ -452,6 +452,9 @@ The littlefs implementation can be configured to trade-off performance and memor
 
 When not in use (when all files and file iterators are closed), the littlefs implementation unmounts the file system. This releases all memory. This is the same behavior implemented by SPIFFS and FAT32.
 
+Warning: file updates (e.g. writes) are not actually committed to the filesystem until close is called on the file.
+(The file class does not currently expose a sync operation, which could commit the data as well.)
+
 <a id="zip"></a>
 ## class ZIP
 
