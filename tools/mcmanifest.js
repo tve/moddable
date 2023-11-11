@@ -157,6 +157,7 @@ export class MakeFile extends FILE {
 		const wantsTest = tool.defines.xs?.test || tool.defines.XS_TEST
 		const wantsOTA = tool.defines.ota?.autosplit;
 		const wantsStorage = tool.defines.file?.partition;
+		const storageSize = tool.defines.file?.size;
 
 		if (wantsOTA || usesMods || wantsStorage || wantsTest) {
 			let factoryLine, hasOTA, hasMod, hasStorage, storagePartition = wantsStorage?.slice(1);
@@ -193,7 +194,7 @@ export class MakeFile extends FILE {
 			if (undefined !== factoryLine) {
 				const OTADATA_SIZE = 0x2000;
 				const MODS_SIZE = 0x40000;
-				const STORAGE_SIZE = 0x10000;
+				const STORAGE_SIZE = storageSize || 0x10000;
 				const TEST_SIZE = 0x10000;
 				let line = partitions[factoryLine].split(",").map(item => item.trim());
 				let size = parse(line[4]);
