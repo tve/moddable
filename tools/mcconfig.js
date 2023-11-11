@@ -1187,6 +1187,7 @@ export default class extends Tool {
 				file = new MakeFile(path);
 		}
 		file.generate(this);
+		this.report("Makefile: " + path);
 
 		if (this.tsFiles.length) {
 			file = new TSConfigFile(this.modulesPath + this.slash + "tsconfig.json");
