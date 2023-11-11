@@ -183,7 +183,9 @@ void xs_preference_keys(xsMachine *the)
 	
 	xsmcSetNewArray(xsResult, 0);
 	
-	result = nvs_entry_find(NVS_DEFAULT_PART_NAME, xsmcToString(xsArg(0)), NVS_TYPE_ANY, &it);
+	char * domain = xsmcToString(xsArg(0));
+	if (domain && strlen(domain) == 0) domain = NULL; // empty domain: find in all domains
+	result = nvs_entry_find(NVS_DEFAULT_PART_NAME, domain, NVS_TYPE_ANY, &it);
 	if (ESP_OK != result)
 		return;
 
@@ -194,7 +196,15 @@ void xs_preference_keys(xsMachine *the)
 
         nvs_entry_info(it, &info);
 
-		xsmcSetString(xsVar(0), info.key);
+		if (domain) {
+			xsmcSetString(xsVar(0), info.key);
+		} else {
+			char key[2*NVS_KEY_NAME_MAX_SIZE+2]; // +2 for '|' and '\n'
+			strncpy(key, info.namespace_name, NVS_KEY_NAME_MAX_SIZE);
+			strcat(key, "|");
+			strncat(key, info.key, NVS_KEY_NAME_MAX_SIZE);
+			xsmcSetString(xsVar(0), key);
+		}
 		xsmcSetIndex(xsResult, i++, xsVar(0));
 
         result = nvs_entry_next(&it);
