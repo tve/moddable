@@ -200,6 +200,14 @@ void xs_file_write(xsMachine *the)
 		xsUnknownError("file flush failed");
 }
 
+void xs_file_sync(xsMachine *the)
+{
+    FILE *file = getFile(the);
+    int32_t result = fflush(file);
+	if (0 != result)
+		xsUnknownError("file flush failed");
+}
+
 void xs_file_close(xsMachine *the)
 {
     FILE *file = getFile(the);
@@ -384,7 +392,6 @@ void xs_file_system_config(xsMachine *the)
 void xs_file_system_info(xsMachine *the)
 {
     xsResult = xsmcNewObject();
-
     startFS();
 	size_t total = 0, used = 0;
     esp_err_t ret;
@@ -399,6 +406,7 @@ void xs_file_system_info(xsMachine *the)
     total = tot_sect * SECTOR_SIZE;
     used = (tot_sect - fre_sect) * SECTOR_SIZE;
 #else
+    xsLog("SPIFFS file info\n");
 	ret = esp_spiffs_info(NULL, &total, &used);
 #endif
 

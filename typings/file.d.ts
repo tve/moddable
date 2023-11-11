@@ -36,10 +36,12 @@ declare module "file" {
 
     write(
       value: ArrayBufferLike | ArrayBuffer | string,
-      ...moreValues: (ArrayBuffer | string)[]
+      ...moreValues: (ArrayBufferLike | ArrayBuffer | string)[]
     ): void;
 
     close(): void;
+
+    sync(): void;
 
     readonly length: number;
     position: number;
@@ -56,8 +58,8 @@ declare module "file" {
   }
 
   class Directory {
-    static create(path): void;
-    static delete(path): void;
+    static create(path: string): void;
+    static delete(path: string): void;
   }
 
   class System {

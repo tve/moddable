@@ -231,6 +231,14 @@ void xs_file_write(xsMachine *the)
 	}
 }
 
+void xs_file_sync(xsMachine *the)
+{
+	lfs_file_t *file = xsmcGetHostDataValidate(xsThis, (void *)&modLittlefsHooksFile);
+	int result = lfs_file_sync(&gLFS->lfs, file);
+	if (result < 0)
+		lfs_error(the, result);
+}
+
 void xs_file_close(xsMachine *the)
 {
 	lfs_file_t *file = xsmcGetHostDataValidate(xsThis, (void *)&modLittlefsHooksFile);
@@ -788,6 +796,7 @@ void startLittlefs(xsMachine *the)
 
 	if (err)
 		lfs_error(the, err);
+    // xsLog("Started LittleFS\n");
 }
 
 void stopLittlefs(void)

@@ -27,6 +27,7 @@ export class File @ "xs_file_destructor" {
 
 	read(type, count) @ "xs_file_read";
 	write(...items) @ "xs_file_write";
+	sync() @ "xs_file_sync";
 
 	close() @ "xs_file_close";
 
