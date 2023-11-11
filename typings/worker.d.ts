@@ -36,8 +36,12 @@ declare module "worker" {
 		constructor(module: string, options?: object)
 	}
 
+	export interface GlobalSelf extends Self {
+		close(): void;
+	}
+
 	global {
-		const self: Self
+		const self: GlobalSelf
 	}
 
 	export {Worker as default}
