@@ -346,22 +346,25 @@ void xs_analog_read_(xsMachine *the)
 
 void xs_analog_millivolts_(xsMachine *the)
 {
-	uint32_t millivolts;
+	int millivolts = -1;
+	int raw;
 	Analog analog = xsmcGetHostDataValidate(xsThis, xs_analog_destructor_);
 
+	if (ESP_OK != adc_oneshot_read(analog->handle, analog->channel, &raw))
+		modLog("analog onshot_read failed");
+	
+#if ADC_CALI_SCHEME_CURVE_FITTING_SUPPORTED || ADC_CALI_SCHEME_LINE_FITTING_SUPPORTED
 	if (analog->port == 1) {
-		int reading = adc1_get_raw(analog->channel);
-		millivolts = esp_adc_cal_raw_to_voltage(reading, &gADC1Characteristics);
-		char buf[32];
-		sprintf(buf, "adc:%d=%dmV\n", reading, millivolts);
-		xsTrace(buf);
-	} else if (analog->port == 2) {
-		int reading;
-		if (ESP_OK != adc2_get_raw(analog->channel, ADC_WIDTH, &reading))
-			xsUnknownError("ADC2 read timed out"); // can happen routinely if Wi-Fi or BLE is in use
-
-		millivolts = esp_adc_cal_raw_to_voltage(reading, &gADC2Characteristics);
+		adc_cali_raw_to_voltage(gADC1_cali_handle, raw, &millivolts);
+	} 
+#if ADC_PORTS > (1)
+	else if (analog->port == 2) {
+		adc_cali_raw_to_voltage(gADC2_cali_handle, raw, &millivolts);
 	}
+#endif
+#endif
+	if (-1 == millivolts)
+		millivolts = raw;		// uncalibrated
 
 	xsmcSetInteger(xsResult, millivolts);
 }
