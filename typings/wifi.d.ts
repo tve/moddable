@@ -24,7 +24,11 @@ declare module "wifi" {
     ssid: string,
     password?: string
   }
-  export type WiFiCallback = (message: "connect" | "gotIP" | "lostIP" | "disconnect") => void
+  export type WiFiCallback = (
+    this: WiFi,
+    message: "connect" | "gotIP" | "lostIP" | "disconnect",
+    code: number
+    ) => void
   export type WiFiScanCallback = (item: {
     ssid: string,
     authentication: string,
