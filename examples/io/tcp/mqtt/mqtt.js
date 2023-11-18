@@ -60,8 +60,8 @@ export class Client {
 	
 	constructor(url, options) {
 		const parts = URLParts(url);
-		if (parts.scheme != "mqtt")
-			throw new URIError("mqtt only");
+		if (parts.scheme != "mqtt" && parts.scheme != "mqtts")
+			throw new URIError("mqtt/mqtts only");
 		let keepalive = 60_000;
 		let id = "mqttxs_"  + Math.random().toString(16).substr(2, 8);
 		let user = undefined;
@@ -89,12 +89,13 @@ export class Client {
 			if ("resubscribe" in options)
 				this.#resubscribe = options.resubscribe
 		}
+		const proto = device.network[parts.scheme];
 		this.#options = {
-			...device.network.mqtt,
+			...proto,
 			host: parts.host, port: parts.port,
 			keepalive, id, user, password, will,
 			onControl: (msg) => {
-				if (msg.operation == device.network.mqtt.io.CONNACK) {
+				if (msg.operation == proto.io.CONNACK) {
 					this.#state = CONNECTED;
 					this.#wait = true;
 					this.#acks.forEach(ack => {
@@ -109,16 +110,16 @@ export class Client {
 					this.#acks = [];
 					acks = acks.filter(ack => {
 						if ((ack.operation == msg.operation) && (ack.id == msg.id)) {
-							if (ack.operation == device.network.mqtt.io.PUBREC) {
-								ack.operation = device.network.mqtt.io.PUBCOMP;
+							if (ack.operation == proto.io.PUBREC) {
+								ack.operation = proto.io.PUBCOMP;
 								delete ack.data;
 								delete ack.options;
 								delete ack.optionsLength;
-								// device.network.mqtt.io already sent PUBREL
+								// proto.io already sent PUBREL
 								return true;
 							}
 							if (ack.callback) {
-								if (ack.operation == device.network.mqtt.io.SUBACK) {
+								if (ack.operation == proto.io.SUBACK) {
 									const items = ack.items.map((item, index) => {
 										return {
 											qos: msg.payload[index],
@@ -238,7 +239,7 @@ export class Client {
 			}
 		};
 		this.#state = CONNECTING;
-		this.#client = new device.network.mqtt.io(this.#options);
+		this.#client = new proto.io(this.#options);
 	}
 	get connected() {
 		return this.#state == CONNECTED;
