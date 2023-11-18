@@ -31,7 +31,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/ringbuf.h"
-#include "driver/rmt.h"
+//#include "driver/rmt.h"
+typedef void *rmt_channel_t;
 
 
 #ifdef __cplusplus

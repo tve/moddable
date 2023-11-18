@@ -56,12 +56,12 @@ sample code bearing this copyright.
 //--------------------------------------------------------------------------
 */
 
-#ifdef ESP32
+#ifdef ESP32X
 
 #include "owb.h"
 #include "owb_rmt.h"
 
-#include "driver/rmt.h"
+#include "driver/deprecated/driver/rmt.h"
 #include "driver/gpio.h"
 #include "soc/gpio_periph.h"
 
