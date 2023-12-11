@@ -142,8 +142,8 @@ class TLSSocket {
 		if (!this.#ready)
 			this.#messageHandler();
 	}
-	#onError() {
-		this.#callbacks.onError?.();
+	#onError(err) {
+		this.#callbacks.onError?.(err);
 	}
 	#messageHandler(read) {
 		if (!this.#ready) {
@@ -160,7 +160,7 @@ class TLSSocket {
 		if (undefined === data)		// nothing to read
 			return;
 		if (null === data)		// closed
-			return void this.#onError();
+			return void this.#onError("EOF");
 		data.position = 0;
 		const readable = data.byteLength;
 		if (!readable)

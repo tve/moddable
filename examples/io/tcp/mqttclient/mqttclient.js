@@ -102,15 +102,15 @@ class MQTTClient {
 					
 					this.#options.connecting = Timer.set(() => {
 						delete this.#options.connecting; 
-						this.#onError();
+						this.#onError("connecting timed-out");
 					}, 30_000);		//@@ configurable
 				}
 				catch {
-					this.#onError?.();
+					this.#onError?.("connecting: " + err);
 				}
 			},
 			onError: () => {
-				this.#onError?.();
+				this.#onError?.("resolving " + err);
 			},
 		});
 	}
@@ -670,7 +670,7 @@ class MQTTClient {
 	}
 	#onError(msg) {
 		trace("mqttClient error: ", msg ?? "unknown", "\n");
-		this.#options.onError?.call(this);
+		this.#options.onError?.call(this, msg);
 		this.close();
 	} 
 	#parsed(msg) {
