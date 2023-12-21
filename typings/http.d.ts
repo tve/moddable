@@ -21,6 +21,8 @@
 declare module "http" {
   import type {TCPSocketOptions, ListenerOptions} from "socket";
 
+  // HTTP client types
+
   type RequestError = -1;
   type RequestBodyFragment = 0;
   type RequestStatusCode = 1;
@@ -51,7 +53,11 @@ declare module "http" {
   }
 
   // TODO: better
-  export type HTTPRequestCallback = (message: RequestStatus, val1?: any, val2?: any) => void | number | boolean | string | ArrayBuffer;
+  export type HTTPRequestCallback = (
+    message: RequestStatus,
+    val1?: any,
+    val2?: any
+  ) => void | number | boolean | string | ArrayBuffer;
 
   export class Request {
     constructor(options: HTTPRequestOptions);
@@ -71,6 +77,8 @@ declare module "http" {
     static readonly responseComplete: RequestAllResponse;
     static readonly error: RequestError;
   }
+
+  // HTTP Server types
 
   type ServerConnection = 1;
   type ServerStatus = 2;
@@ -94,21 +102,42 @@ declare module "http" {
     ServerResponseComplete |
     ServerError
   );
-  export type HTTPServerOptions = ListenerOptions;
-  // TODO: better
-  export type HTTPServerCallback = (this: Request, message: ServerMessages, val1?: any, val2?: any) => void | number | boolean | string |
-    ArrayBuffer | { status?: number, reason?: string, headers?: string[], body: true | string | ArrayBuffer };
 
-  export class Server {
-    constructor(
-      options?: HTTPServerOptions
-    );
+  export type HTTPServerOptions = ListenerOptions;
+
+  export interface HTTPServerResponse {
+    status?: number;
+    reason?: string; // text version of status code
+    headers?: string[];
+    body?: true | string | ArrayBuffer;
+  }
+
+  export interface HTTPServerRequest extends Record<string, any> { // handlers can add props!
     close(): void;
     read(): number;
     read<T extends typeof String | typeof ArrayBuffer>(
       type: T,
       until?: number
     ): T extends typeof String ? string : ArrayBuffer;
+    callback: HTTPServerCallback;
+    server: Server;
+    state: number; // private use
+  }
+
+  // TODO: better
+  export type HTTPServerCallback = (
+    this: HTTPServerRequest,
+    message: ServerMessages,
+    val1?: any,
+    val2?: any
+  ) => void | number | boolean | string | ArrayBuffer | HTTPServerResponse;
+
+  export class Server {
+    constructor(
+      options?: HTTPServerOptions
+    );
+    close(connections: boolean): void;
+    detach(connection: HTTPServerRequest): void;
     callback: HTTPServerCallback
 
     static readonly connection: ServerConnection;
