@@ -74,12 +74,14 @@ static void doRemoteCommand(txMachine *the, uint8_t *cmd, uint32_t cmdLen);
 	SemaphoreHandle_t gDebugMutex;
 
 	#define mxDebugMutexTake() xSemaphoreTake(gDebugMutex, portMAX_DELAY)
+	#define mxDebugMutexTakeTicks(ticks) xSemaphoreTake(gDebugMutex, ticks)
 	#define mxDebugMutexGive() xSemaphoreGive(gDebugMutex)
 	#define mxDebugMutexAllocated() (NULL != gDebugMutex)
 
 	static int fx_vprintf(const char *str, va_list list);
 #else
 	#define mxDebugMutexTake()
+	#define mxDebugMutexTakeTicks()
 	#define mxDebugMutexGive()
 	#define mxDebugMutexAllocated() (true)
 #endif
@@ -1291,9 +1293,9 @@ int fx_vprintf(const char *str, va_list list)
 {
 	int result;
 
-	mxDebugMutexTake();
-		result = vprintf(str, list);
-	mxDebugMutexGive();
+	int ok = mxDebugMutexTakeTicks(10);
+	result = vprintf(str, list);
+	if (ok) mxDebugMutexGive();
 
 	return result;
 }

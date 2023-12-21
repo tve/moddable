@@ -247,10 +247,10 @@ void app_main() {
 
 #ifdef mxDebug
 	QueueHandle_t uartQueue;
-	uart_driver_install(USE_UART, UART_FIFO_LEN * 2, 0, 8, &uartQueue, 0);
+	uart_driver_install(USE_UART, UART_FIFO_LEN * 2, UART_FIFO_LEN * 2, 8, &uartQueue, 0);
 	xTaskCreate(debug_task, "debug", (768 + XT_STACK_EXTRA) / sizeof(StackType_t), uartQueue, 8, NULL);
 #else
-	uart_driver_install(USE_UART, UART_FIFO_LEN * 2, 0, 0, NULL, 0);
+	uart_driver_install(USE_UART, UART_FIFO_LEN * 2, UART_FIFO_LEN * 2, 0, NULL, 0);
 #endif
 
 	xTaskCreate(loop_task, "main", kStack, NULL, 4, NULL);
