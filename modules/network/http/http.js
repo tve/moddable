@@ -551,7 +551,8 @@ function server(message, value, etc) {
 
 						let request = this.callback(Server.headersComplete);		// headers complete... let's see what to do with the request body
 						if (false === request)
-							delete this.total;				// ignore request body and just send response
+							socket.ignore = true
+							// delete this.total;				// ignore request body and just send response
 
 						if (undefined !== this.total) {
 							// start to receive request body
@@ -615,7 +616,11 @@ function server(message, value, etc) {
 				let count = (value < this.total) ? value : this.total;
 				if (0 === count) return;
 
-				if (true === this.request)
+				if (socket.ignore) {
+					socket.read(null, count);
+					this.total -= count;
+				}
+				else if (true === this.request)
 					this.callback(Server.requestFragment, socket.read());	// callback reads the data
 				else {
 					this.buffers.push(socket.read(this.request, count));		// http server reads the data
@@ -671,7 +676,8 @@ function server(message, value, etc) {
 							byteLength = parseInt(headers[i + 1]);
 					}
 
-					this.body = response.body;
+					// this.body = response.body;
+					this.body = (response.body instanceof String) ? response.body.valueOf() : response.body;
 					if (true === response.body) {
 						if (undefined === byteLength) {
 							this.flags = 2;
