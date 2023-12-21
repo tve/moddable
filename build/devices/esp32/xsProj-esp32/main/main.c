@@ -127,6 +127,7 @@ void loop_task(void *pvParameter)
 #endif
 
 	while (true) {
+		printf("XS VM CLONING\n");
 		gThe = modCloneMachine(NULL, NULL);
 
 		modRunMachineSetup(gThe);
@@ -143,6 +144,7 @@ void loop_task(void *pvParameter)
 		printf("XS VM DONE\r\n");
 
 		xsDeleteMachine(the);
+		printf("XS VM DELETED\r\n");
 #else
 		while (true) {
 			modTimersExecute();

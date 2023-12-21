@@ -156,6 +156,11 @@ void xs_file_write(xsMachine *the)
 		xsUnknownError("file flush failed");
 }
 
+void xs_file_sync(xsMachine *the)
+{
+    // MacOS persists written data automatically, nothing to do
+}
+
 void xs_file_close(xsMachine *the)
 {
 	FILE *file = getFile(the);

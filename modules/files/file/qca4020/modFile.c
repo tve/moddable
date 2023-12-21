@@ -146,6 +146,11 @@ void xs_file_write(xsMachine *the)
 	}
 }
 
+void xs_file_sync(xsMachine *the)
+{
+    // OS persists written data automatically, nothing to do
+}
+
 void xs_file_close(xsMachine *the)
 {
 	xsFile file = (xsFile)xsmcGetHostData(xsThis);
