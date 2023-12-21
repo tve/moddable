@@ -51,7 +51,8 @@ declare module "embedded:provider/builtin" {
     SMBus: { default: ConstructorParameters<typeof SMBus>[0] };
     SPI: { default: ConstructorParameters<typeof SPI>[0] };
     Serial: { default: ConstructorParameters<typeof Serial>[0] };
-    pin: { [name: string]: PinSpecifier };
+    pin: Record<string, PinSpecifier>;                                                     
+    network?: Record<string, any>;                                                         
   };
   export default device;
 }
