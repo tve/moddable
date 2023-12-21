@@ -223,10 +223,12 @@ const char *gXSAbortStrings[] ICACHE_FLASH_ATTR = {
 void fxAbort(txMachine* the, int status)
 {
 #if MODDEF_XS_TEST
+	extern uint8_t gSoftReset;
 	if (XS_DEBUGGER_EXIT == status) {
 		extern txMachine *gThe;
 		if (gThe == the) {
-			gThe = NULL;		// soft reset
+			xsLog("XS: Soft reset!\n");
+			gSoftReset = 1;		// soft reset
 			return;
 		}
 	}

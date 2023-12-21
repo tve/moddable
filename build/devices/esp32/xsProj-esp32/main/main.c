@@ -116,6 +116,10 @@ static void debug_task(void *pvParameter)
 }
 #endif
 
+#if MODDEF_XS_TEST
+uint8_t gSoftReset;
+#endif
+
 void loop_task(void *pvParameter)
 {
 #if CONFIG_ESP_TASK_WDT_EN
@@ -129,11 +133,14 @@ void loop_task(void *pvParameter)
 
 #if MODDEF_XS_TEST
 		xsMachine *the = gThe;
-		while (gThe) {
+		gSoftReset = 0;
+		printf("XS VM STARTING\r\n");
+		while (!gSoftReset) {
 			modTimersExecute();
 			modMessageService(gThe, modTimersNext());
 			modInstrumentationAdjust(Turns, +1);
 		}
+		printf("XS VM DONE\r\n");
 
 		xsDeleteMachine(the);
 #else
