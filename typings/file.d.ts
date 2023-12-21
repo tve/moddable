@@ -46,7 +46,7 @@ declare module "file" {
     readonly length: number;
     position: number;
 
-    static delete(path: string): boolean;
+    static delete(path: string): boolean; // true if deleted, false if not
     static exists(path: string): boolean;
     static rename(from: string, to: string): boolean;
   }
@@ -59,7 +59,7 @@ declare module "file" {
 
   class Directory {
     static create(path: string): void;
-    static delete(path: string): void;
+    static delete(path: string): boolean; // true if deleted, false if not
   }
 
   class System {
